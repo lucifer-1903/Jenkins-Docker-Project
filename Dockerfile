@@ -1,5 +1,6 @@
 FROM centos:latest
 MAINTAINER jagannathan1906@gmail.com
+RUN yum makecache
 
 # Install necessary packages
 RUN yum install -y httpd zip
