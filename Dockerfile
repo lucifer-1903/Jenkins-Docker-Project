@@ -1,4 +1,4 @@
-docker pull centos:8.3.2011
+FROM centos:8
 MAINTAINER jagannathan1906@gmail.com
 RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/*.repo
 RUN sed -i 's/#baseurl/baseurl/g' /etc/yum.repos.d/*.repo
