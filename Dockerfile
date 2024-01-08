@@ -1,6 +1,9 @@
 FROM centos:latest
 MAINTAINER jagannathan1906@gmail.com
 RUN yum makecache
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/*.repo
+RUN sed -i 's/#baseurl/baseurl/g' /etc/yum.repos.d/*.repo
+RUN sed -i 's/metalink/#metalink/g' /etc/yum.repos.d/*.repo
 
 # Install necessary packages
 RUN yum install -y httpd zip
