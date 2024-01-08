@@ -1,5 +1,5 @@
 FROM centos:8
-yum update -y
+RUN yum update -y
 MAINTAINER jagannathan1906@gmail.com
 RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/*.repo
 RUN sed -i 's/#baseurl/baseurl/g' /etc/yum.repos.d/*.repo
