@@ -1,10 +1,10 @@
 FROM centos:8
-# RUN yum update -y
+RUN yum update -y
 MAINTAINER jagannathan1906@gmail.com
 RUN cd /etc/yum.repos.d/
-RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/*.repo
-RUN sed -i 's/#baseurl/baseurl/g' /etc/yum.repos.d/*.repo
-RUN sed -i 's/metalink/#metalink/g' /etc/yum.repos.d/*.repo
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
 # Install necessary packages
 RUN yum install -y httpd zip
 # Add website ZIP file
@@ -23,7 +23,6 @@ RUN cp -rvf photogenic/* .
 RUN rm -rf photogenic
 # Start Apache in the foreground
 CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
-# Expose port 80
 EXPOSE 80
 
 
