@@ -4,11 +4,6 @@ MAINTAINER jagannathan1906@gmail.com
 RUN cd /etc/yum.repos.d/
 RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
 RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-# Unzip the website files using tar
-RUN yum install -y tar \
-    && unzip photogenic.zip \
-    && tar -xf photogenic.tar.gz \
-    && rm -f photogenic.zip photogenic.tar.gz
 # Install necessary packages
 RUN yum install -y httpd zip
 # Add website ZIP file
