@@ -1,6 +1,7 @@
 FROM centos:8
 RUN yum update -y
 MAINTAINER jagannathan1906@gmail.com
+Add RUN cd /etc/yum.repos.d/
 RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/*.repo
 RUN sed -i 's/#baseurl/baseurl/g' /etc/yum.repos.d/*.repo
 RUN sed -i 's/metalink/#metalink/g' /etc/yum.repos.d/*.repo
