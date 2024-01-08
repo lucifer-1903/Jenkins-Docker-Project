@@ -4,29 +4,30 @@ MAINTAINER jagannathan1906@gmail.com
 # Install necessary packages
 RUN yum install -y httpd zip
 
-# Install unzip separately
-RUN yum install -y unzip
-
 # Add website ZIP file
 ADD https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip /var/www/html/
 
 # Set working directory
 WORKDIR /var/www/html/
 
-# Unzip the website files
-RUN unzip -q photogenic.zip
+# Unzip the website files using tar
+RUN yum install -y tar \
+    && unzip photogenic.zip \
+    && tar -xf photogenic.tar.gz \
+    && rm -f photogenic.zip photogenic.tar.gz
 
 # Copy the website files
 RUN cp -rvf photogenic/* .
 
 # Clean up unnecessary files
-RUN rm -rf photogenic photogenic.zip
+RUN rm -rf photogenic
 
 # Start Apache in the foreground
 CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
 
 # Expose port 80
 EXPOSE 80
+
 
 
  
