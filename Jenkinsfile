@@ -1,4 +1,38 @@
-pipeline {
+stage("git checkout"){
+        git 'https://github.com/lucifer-1903/Jenkins-Docker-Project.git'
+    }
+    stage("Docker Build"){
+        sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID . ' // Local
+        sh 'docker image tag $JOB_NAME:v1.$BUILD_ID jagan1906/$JOB_NAME:v1.$BUILD_ID' // One with Build tag
+        sh 'docker image tag $JOB_NAME:v1.$BUILD_ID jagan1906/$JOB_NAME:latest' // One with latest tag
+}
+    stage ("Pushing Image to Dockerhub"){
+       withCredentials([string(credentialsId: 'Dockerr', variable: 'Dockerpwd')]) {
+            sh "docker login -u jagan1906 -p${Dockerpwd}"
+            sh 'docker image push jagan1906/$JOB_NAME:v1.$BUILD_ID'
+            sh 'docker image push jagan1906/$JOB_NAME:latest'
+            
+            // Removing the previous the image
+            sh 'docker image rm $JOB_NAME:v1.$BUILD_ID jagan1906/$JOB_NAME:v1.$BUILD_ID jagan1906/$JOB_NAME:latest'
+        }
+        
+    stage ("Docker containerization"){
+        def Dockerrun = 'docker run -p 9000:80 -d --name Dockercontainer jagan1906/docker-groovy-webapp'
+       // def Docker_stop = 'docker stop Dockercontainer'
+        def Docker_remove = 'docker rm -f Dockercontainer'
+        def Docker_remove_image = 'docker rmi -f jagan1906/docker-groovy-webapp'
+      sshagent(['SSH_docker']) {
+             sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.83.202 ${Docker_remove}"
+             sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.83.202 ${Docker_remove_image}"
+             sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.83.202 ${Dockerrun}"
+             //sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.83.202 ${Docker_stop}"
+}
+    }
+    }
+}
+
+
+/* pipeline {
     
     agent any
     
@@ -71,4 +105,4 @@ pipeline {
             }
         } */
     }
-}
+} */
