@@ -29,7 +29,6 @@ stage("git checkout"){
 }
     }
     }
-}
 
 
 /* pipeline {
